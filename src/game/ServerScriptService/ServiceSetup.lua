@@ -15,9 +15,11 @@
 local replicatedStorage = game:GetService("ReplicatedStorage")
 
 local services = replicatedStorage.Services
-local sharedServices = services.Shared
-
 local setupRemoteAccess = require(services.Modules.SetupRemoteAccess)
+
+local function isAService(obj)
+  return obj:IsA("ModuleScript") and string.match(obj.Name:lower(), "service$")
+end
 
 local function initSharedService(serviceModule)
   local name = serviceModule.Name
@@ -27,10 +29,12 @@ local function initSharedService(serviceModule)
 end
 
 local function init()
-  local serviceModules = sharedServices:GetChildren()
+  local serviceModules = services:GetChildren()
 
-  for _, serviceModule in ipairs(serviceModules) do
-    initSharedService(serviceModule)
+  for _, child in ipairs(serviceModules) do
+    if isAService(child) then
+      initSharedService(child)
+    end
   end
 end
 

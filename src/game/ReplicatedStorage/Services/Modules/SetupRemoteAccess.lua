@@ -40,7 +40,8 @@ end
 
 --------------------------------------------------------------------------------
 
-local function setupRemoteAccess(serviceModule, serviceTable)
+local function setupRemoteAccess(serviceModule)
+  local serviceTable = require(serviceModule)
   local methods = getMethods(serviceTable)
   local remoteStorage = storage.getMethods(serviceModule)
 

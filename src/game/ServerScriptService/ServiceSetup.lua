@@ -21,19 +21,12 @@ local function isAService(obj)
   return obj:IsA("ModuleScript") and string.match(obj.Name:lower(), "service$")
 end
 
-local function initSharedService(serviceModule)
-  local name = serviceModule.Name
-  local service = require(serviceModule)
-
-  setupRemoteAccess(name, service)
-end
-
 local function init()
   local serviceModules = services:GetChildren()
 
-  for _, child in ipairs(serviceModules) do
-    if isAService(child) then
-      initSharedService(child)
+  for _, serviceModule in ipairs(serviceModules) do
+    if isAService(serviceModule) then
+      setupRemoteAccess(serviceModule)
     end
   end
 end

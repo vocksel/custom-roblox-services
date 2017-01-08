@@ -13,11 +13,15 @@ local function getMethods(t)
   return methods
 end
 
-local function newRemoteFunction(name, parent, callback)
-  local function invoke(player, ...)
-    -- NOTE I'm not sure if this will be enough for setting up remote access.
-    -- It doesn't reference the serviceTable at all which could be a problem.
-    return callback(player, ...)
+local function newRemoteFunction(name, parent, serviceTable, callback)
+  --[[ The first argument is the player, which we purposefully ignore.
+
+    Our services work like ROBLOX's built in ones, which never have the player
+    automatically passed to them.  If a service needs access to a player, it
+    can be passed in manually. ]]
+  local function invoke(_, ...)
+    -- We pass in serviceTable to propagate the Service's `self`,
+    return callback(serviceTable, ...)
   end
 
   local remote = Instance.new("RemoteFunction")
@@ -28,9 +32,9 @@ local function newRemoteFunction(name, parent, callback)
   return remote
 end
 
-local function copyMethodsTo(methods, storage)
+local function replicateMethods(methods, storage, serviceTable)
   for name, callback in pairs(methods) do
-    newRemoteFunction(name, storage, callback)
+    newRemoteFunction(name, storage, serviceTable, callback)
   end
 end
 
@@ -40,7 +44,7 @@ local function setupRemoteAccess(serviceName, serviceTable)
   local storage = RoutingStorage.new(serviceName)
   local methods = getMethods(serviceTable)
 
-  copyMethodsTo(methods, storage:GetMethodStorage())
+  replicateMethods(methods, storage:GetMethodStorage(), serviceTable)
 end
 
 return setupRemoteAccess

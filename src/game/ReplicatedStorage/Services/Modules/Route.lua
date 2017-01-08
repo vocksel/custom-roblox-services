@@ -1,6 +1,6 @@
 local run = game:GetService("RunService")
 
-local stortage = require(script.Parent.RoutingStorage)
+local storage = require(script.Parent.RoutingStorage)
 
 local function setupMethodRouting(router, methodRemotes)
   for _, remote in ipairs(methodRemotes:GetChildren()) do

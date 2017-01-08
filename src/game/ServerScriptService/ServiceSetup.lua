@@ -31,21 +31,26 @@ local function getMethods(t)
   return methods
 end
 
+local function newInstance(className, name, parent)
+  local instance = Instance.new(className)
+  instance.Name = name
+  instance.Parent = parent
+
+  return instance
+end
+
 local function newRemoteFunction(name, parent, serviceTable, callback)
+  local remote = newInstance("RemoteFunction", name, parent)
+
   --[[ The first argument is the player, which we purposefully ignore.
 
     Our services work like ROBLOX's built in ones, which never have the player
     automatically passed to them.  If a service needs access to a player, it
     can be passed in manually. ]]
-  local function invoke(_, ...)
+  function remote.OnServerInvoke(_, ...)
     -- We pass in serviceTable to propagate the Service's `self`,
     return callback(serviceTable, ...)
   end
-
-  local remote = Instance.new("RemoteFunction")
-  remote.Name = name
-  remote.OnServerInvoke = invoke
-  remote.Parent = parent
 
   return remote
 end

@@ -61,7 +61,9 @@ local function newRemoteMethod(name, parent, serviceTable, callback)
   return remote
 end
 
-local function replicateMethods(methods, remoteStorage, serviceTable)
+local function replicateMethods(serviceTable, remoteStorage)
+  local methods = getMethods(serviceTable)
+
   for name, callback in pairs(methods) do
     newRemoteMethod(name, remoteStorage, serviceTable, callback)
   end
@@ -69,10 +71,9 @@ end
 
 local function setupRemoteAccess(serviceModule)
   local serviceTable = require(serviceModule)
-  local methods = getMethods(serviceTable)
   local remoteStorage = storage.getMethods(serviceModule)
 
-  replicateMethods(methods, remoteStorage, serviceTable)
+  replicateMethods(serviceTable, remoteStorage)
 end
 
 local function init()

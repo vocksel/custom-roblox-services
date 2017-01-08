@@ -4,6 +4,8 @@ This is a system for creating your own custom services in ROBLOX.
 
 There are many helpful built-in services, but games are complex and require very specific handling at times. The built in services can't account for every use case, which is where custom services come in.
 
+This system is intended for use with FilteringEnabled. Your mileage may vary without it.
+
 ## Usage Example
 
 Here's a service in its simplest form:

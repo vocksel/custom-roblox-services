@@ -1,6 +1,6 @@
 local run = game:GetService("RunService")
 
-local RoutingStorage = require(script.Parent.RoutingStorage)
+local stortage = require(script.Parent.RoutingStorage)
 
 local function setupMethodRouting(router, methodRemotes)
   for _, remote in ipairs(methodRemotes:GetChildren()) do
@@ -27,12 +27,10 @@ local function setupMethodRouting(router, methodRemotes)
   end
 end
 
-local function setupRouting(serviceName)
-  local storage = RoutingStorage.new(serviceName)
-
+local function setupRouting(serviceModule)
   local router = {}
 
-  setupMethodRouting(router, storage:GetMethodStorage())
+  setupMethodRouting(router, storage.getMethods(serviceModule))
 
   -- Set __newindex last so it doesn't get upset when we add on to the router
   -- in any above function calls.
@@ -58,9 +56,9 @@ local function setupRouting(serviceName)
   return router
 end
 
-local function route(serviceName, serviceTable)
+local function route(serviceModule, serviceTable)
   if run:IsClient() and not run:IsServer() then
-    return setupRouting(serviceName)
+    return setupRouting(serviceModule)
   else
     return serviceTable
   end

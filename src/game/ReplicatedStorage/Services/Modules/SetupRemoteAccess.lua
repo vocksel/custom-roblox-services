@@ -1,6 +1,6 @@
 local replicatedStorage = game:GetService("ReplicatedStorage")
 
-local RoutingStorage = require(script.Parent.RoutingStorage)
+local storage = require(script.Parent.RoutingStorage)
 
 -- Gets all the methods from a table.
 local function getMethods(t)
@@ -32,19 +32,19 @@ local function newRemoteFunction(name, parent, serviceTable, callback)
   return remote
 end
 
-local function replicateMethods(methods, storage, serviceTable)
+local function replicateMethods(methods, remoteStorage, serviceTable)
   for name, callback in pairs(methods) do
-    newRemoteFunction(name, storage, serviceTable, callback)
+    newRemoteFunction(name, remoteStorage, serviceTable, callback)
   end
 end
 
 --------------------------------------------------------------------------------
 
-local function setupRemoteAccess(serviceName, serviceTable)
-  local storage = RoutingStorage.new(serviceName)
+local function setupRemoteAccess(serviceModule, serviceTable)
   local methods = getMethods(serviceTable)
+  local remoteStorage = storage.getMethods(serviceModule)
 
-  replicateMethods(methods, storage:GetMethodStorage(), serviceTable)
+  replicateMethods(methods, remoteStorage, serviceTable)
 end
 
 return setupRemoteAccess

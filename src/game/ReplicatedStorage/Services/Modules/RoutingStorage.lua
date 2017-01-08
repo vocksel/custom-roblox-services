@@ -1,10 +1,5 @@
-local replicatedStorage = game:GetService("ReplicatedStorage")
-
-local ROUTER_STORAGE_NAME = "CleintRouting"
-local ROUTER_STORAGE_PARENT = replicatedStorage.Services
-
 -- Gets or creates a new folder if one doesn't already exist.
-local function _getFolder(parent, name)
+local function getFolder(parent, name)
   local folder = parent:FindFirstChild(name)
 
   if not folder then
@@ -16,37 +11,14 @@ local function _getFolder(parent, name)
   return folder
 end
 
-local function _getRouterStorage()
-  return _getFolder(ROUTER_STORAGE_PARENT, ROUTER_STORAGE_NAME)
+local storage = {}
+
+function storage.getMethods(serviceModule)
+  return getFolder(serviceModule, "Methods")
 end
 
---------------------------------------------------------------------------------
-
-local RoutingStorage = {}
-RoutingStorage.__index = RoutingStorage
-
-function RoutingStorage.new(serviceName)
-  local self = {}
-  setmetatable(self, RoutingStorage)
-
-  self.ServiceName = serviceName
-
-  return self
+function storage.getEvents(serviceModule)
+	return getFolder(serviceModule, "Events")
 end
 
-function RoutingStorage:GetRootStorage()
-  local storage = _getRouterStorage()
-  return _getFolder(storage, self.ServiceName)
-end
-
-function RoutingStorage:GetMethodStorage()
-  local root = self:GetRootStorage()
-  return _getFolder(root, "Methods")
-end
-
-function RoutingStorage:GetEventStorage()
-  local root = self:GetRootStorage()
-  return _getFolder(root, "Events")
-end
-
-return RoutingStorage
+return storage

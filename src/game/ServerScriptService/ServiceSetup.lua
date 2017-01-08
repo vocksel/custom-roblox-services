@@ -16,7 +16,8 @@ local replicatedStorage = game:GetService("ReplicatedStorage")
 local services = replicatedStorage.Services
 
 local function isAService(obj)
-  return obj:IsA("ModuleScript") and string.match(obj.Name:lower(), "service$")
+  -- Any ModuleScript that ends in "service".
+  return obj:IsA("ModuleScript") and obj.Name:lower():match("service$")
 end
 
 -- Gets all the methods from a table.

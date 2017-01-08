@@ -4,16 +4,18 @@ local RoutingStorage = require(script.Parent.RoutingStorage)
 
 local function setupMethodRouting(router, methodRemotes)
   for _, remote in ipairs(methodRemotes:GetChildren()) do
-    -- Service methods require a colon instead of a dot. This gives us access
-    -- to `self` so we can easily reference the Service in our methods.
+    -- All of our Services use colon notation for their methods.
+    --
+    -- This is to stay consistent with ROBLOX's Services, and also gives us
+    -- access to `self` so we can easily refernece the service when coding.
     --
     -- We require that all methods on the router are called with a colon aswell.
-    -- This is for consistency so that Services are used the same from the
-    -- client and server.
+    -- This is for consistency so that Services are used the same between client
+    -- and server.
     --
-    -- When routing, we don't actually do anything with the Service's table. But
-    -- it's helpful to be able to reserve it as the first argument so we don't
-    -- have to worry about filtering it when passing the arguments to the server.
+    -- When routing, we don't actually do anything with the Service's table. We
+    -- reserve it as the first argument so we don't have to filter it out of the
+    -- variadic arguments when passing them to the server.
     router[remote.Name] = function(serviceTable, ...)
       if type(serviceTable) ~= "table" then
         error(string.format("Service methods must be called with colon "..

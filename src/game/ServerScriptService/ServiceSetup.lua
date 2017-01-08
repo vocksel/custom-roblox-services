@@ -13,7 +13,9 @@
 --]]
 
 local replicatedStorage = game:GetService("ReplicatedStorage")
+
 local services = replicatedStorage.Services
+local storage = require(services.Modules.RoutingStorage)
 
 local function isAService(obj)
   -- Any ModuleScript that ends in "service".

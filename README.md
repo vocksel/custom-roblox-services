@@ -27,6 +27,6 @@ else
 end
 ```
 
-It's defined just like a module, but when returning you pass it into the `route` function. This is what handles the client-server communication.
+The server is given a plain table that makes up the service and all its properties and methods. The client on the other hand is returned a router. The router is what handles the client-server communication.
 
 All services are initialized on the server. When a service is required from the client, all requests are routed to the server. You only ever have to worry about updating the service on the server to have all future requests from the client updated.

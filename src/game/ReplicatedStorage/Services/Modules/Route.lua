@@ -27,7 +27,7 @@ local function setupMethodRouting(router, methodRemotes)
   end
 end
 
-local function setupRouting(serviceModule)
+local function route(serviceModule)
   local router = {}
 
   setupMethodRouting(router, storage.getMethods(serviceModule))
@@ -54,14 +54,6 @@ local function setupRouting(serviceModule)
   })
 
   return router
-end
-
-local function route(serviceModule, serviceTable)
-  if run:IsClient() and not run:IsServer() then
-    return setupRouting(serviceModule)
-  else
-    return serviceTable
-  end
 end
 
 return route

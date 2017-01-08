@@ -9,16 +9,20 @@ There are many helpful built-in services, but games are complex and require very
 Here's a service in its simplest form:
 
 ```lua
-local services = game.ReplicatedStorage.Services
-local route = require(services.Modules.Route)
+local run = game:GetService("RunService")
 
-local service = {}
+if run:IsServer() then
+  local service = {}
 
-function service:Greet(player)
-  print("Hello, " .. player.Name .. "!")
+  function service:Greet(player)
+    print("Hello, " .. player.Name .. "!")
+  end
+
+  return service
+else
+  local route = require(script.Parent.Modules.Route)
+  return route(script)
 end
-
-return route(script.Name, service)
 ```
 
 It's defined just like a module, but when returning you pass it into the `route` function. This is what handles the client-server communication.

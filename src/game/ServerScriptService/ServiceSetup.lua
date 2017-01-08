@@ -39,8 +39,12 @@ local function newInstance(className, name, parent)
   return instance
 end
 
-local function newRemoteFunction(name, parent, serviceTable, callback)
-  local remote = newInstance("RemoteFunction", name, parent)
+local function newRemoteFunction(name, parent)
+  return newInstance("RemoteFunction", name, parent)
+end
+
+local function newRemoteMethod(name, parent, serviceTable, callback)
+  local remote = newRemoteFunction(name, parent)
 
   --[[ The first argument is the player, which we purposefully ignore.
 
@@ -57,7 +61,7 @@ end
 
 local function replicateMethods(methods, remoteStorage, serviceTable)
   for name, callback in pairs(methods) do
-    newRemoteFunction(name, remoteStorage, serviceTable, callback)
+    newRemoteMethod(name, remoteStorage, serviceTable, callback)
   end
 end
 

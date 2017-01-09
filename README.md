@@ -27,7 +27,7 @@ else
 end
 ```
 
-The server is returned a plain table that makes up the service, while the client is returned a router. The router handles client-server communication.
+Depending on where the service is required from, we return a different result. The server is returned a plain table that makes up the service, while the client is returned a router that handles client-server communication.
 
 All services are initialized on the server. When a service is required from the client, all requests are routed to the server. You only ever have to worry about updating the service on the server to have all future requests from the client updated.
 

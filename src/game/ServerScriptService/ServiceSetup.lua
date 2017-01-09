@@ -14,8 +14,12 @@
 
 local replicatedStorage = game:GetService("ReplicatedStorage")
 
-local services = replicatedStorage.Services
-local storage = require(services.Modules.RoutingStorage)
+-- Modify these constants to change the location where services and their
+-- modules are stored.
+local SERVICE_LOCATION = replicatedStorage.Services
+local SERVICE_MODULES = SERVICE_LOCATION.Modules
+
+local storage = require(SERVICE_MODULES.RoutingStorage)
 
 local function isAService(obj)
   -- Any ModuleScript that ends in "service".
@@ -77,7 +81,7 @@ local function setupRemoteAccess(serviceModule)
 end
 
 local function init()
-  local serviceModules = services:GetChildren()
+  local serviceModules = SERVICE_LOCATION:GetChildren()
 
   for _, serviceModule in ipairs(serviceModules) do
     if isAService(serviceModule) then

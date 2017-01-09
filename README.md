@@ -86,7 +86,7 @@ If everything worked, your output should look like this:
 You can also add properties to your service, just like any other table. Go back to `ExampleService` and change the following:
 
 ```lua
-...
+[...]
 local service = {
   Excitement = "!!"
 }
@@ -94,6 +94,7 @@ local service = {
 function service:GetHyped(str)
   return string.upper(str) .. self.Excitement
 end
+[...]
 ```
 
 <!-- TODO Remove when property routing is added -->
